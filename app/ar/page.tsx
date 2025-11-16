@@ -3,9 +3,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+type Mention = {
+  text: string;
+  sentiment: number;
+};
+
 export default function ARPage() {
   const [ready, setReady] = useState(false);
-  const [mentions, setMentions] = useState([]);
+  const [mentions, setMentions] = useState<Mention[]>([]);
 
   // Load A-Frame + AR.js scripts
   useEffect(() => {
@@ -35,12 +40,11 @@ export default function ARPage() {
 
     const fetchMentions = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/live/latest"
-        );
+        const res = await axios.get("http://localhost:5000/api/live/latest");
         setMentions(res.data.items || []);
       } catch (e) {
-        console.log("AR fetch error:", e.message);
+        const msg = e instanceof Error ? e.message : "Unknown error";
+        console.log("AR fetch error:", msg);
       }
     };
 
@@ -67,7 +71,9 @@ export default function ARPage() {
         m.sentiment > 0 ? "#4ade80" : m.sentiment < 0 ? "#f97373" : "#38bdf8";
 
       return `
-        <a-entity position="${x} ${y} ${z}" animation="property: rotation; to: 0 360 0; dur: 8000; loop: true; easing: linear">
+        <a-entity position="${x} ${y} ${z}" 
+          animation="property: rotation; to: 0 360 0; dur: 8000; loop: true; easing: linear">
+          
           <a-sphere radius="0.15" color="${color}" emissive="${color}" emissive-intensity="1.4"></a-sphere>
 
           <a-entity position="0 0.35 0"
@@ -95,7 +101,8 @@ export default function ARPage() {
     .join("");
 
   return (
-    <div className="mt-24"
+    <div
+      className="mt-24"
       dangerouslySetInnerHTML={{
         __html: `
       <style>
@@ -149,6 +156,7 @@ export default function ARPage() {
 
         <!-- Camera -->
         <a-entity camera></a-entity>
+
       </a-scene>
     `,
       }}
