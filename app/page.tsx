@@ -66,13 +66,15 @@ export default function Home() {
     setTopics(clustered.data.topics);
   };
 
-  useEffect(() => {
-    socket.on("mentions", (payload: any) => {
-      setResults((prev) => [...prev, ...payload.items]);
-    });
+useEffect(() => {
+  socket.on("mentions", (payload: any) => {
+    setResults((prev) => [...prev, ...payload.items]);
+  });
 
-    return () => socket.off("mentions");
-  }, []);
+  return () => {
+    socket.off("mentions");
+  };
+}, []);
 
   // Sentiment Weather
   const avgSentiment = useMemo(() => {
