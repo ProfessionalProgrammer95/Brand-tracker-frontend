@@ -1,8 +1,17 @@
 // app/ar/layout.tsx
+import { ReactNode } from "react";
 
-export default function ARLayout({ children }) {
+export default function ARLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="mt-24" style={{ overflow: "hidden", margin: 0, padding: 0,  marginTop: "20%" }}>
+    <div
+      className="mt-24"
+      style={{
+        overflow: "hidden",
+        margin: 0,
+        padding: 0,
+        marginTop: "20%",
+      }}
+    >
       {children}
     </div>
   );
