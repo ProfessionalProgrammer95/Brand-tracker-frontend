@@ -21,6 +21,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import type { ChartOptions } from "chart.js";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
@@ -398,7 +399,7 @@ useEffect(() => {
 }, []);
 
 
-  // 2D chart data
+    // 2D chart data
   const sentimentData = useMemo(
     () => ({
       labels: mentions.map((m) =>
@@ -418,10 +419,11 @@ useEffect(() => {
     [mentions]
   );
 
-  const sentimentOptions = {
+  // 🔧 FIXED: type as ChartOptions<"line">
+  const sentimentOptions: ChartOptions<"line"> = {
     animation: {
       duration: 900,
-      easing: "easeOutQuart",
+      easing: "easeOutQuart", // now correctly typed
     },
     scales: {
       y: { min: -3, max: 3 },
@@ -450,7 +452,8 @@ useEffect(() => {
     };
   }, [mentions]);
 
-  const volumeOptions = {
+  // 🔧 Type as bar chart options
+  const volumeOptions: ChartOptions<"bar"> = {
     animation: {
       duration: 900,
       easing: "easeInOutCubic",
@@ -476,7 +479,8 @@ useEffect(() => {
     };
   }, [mentions]);
 
-  const sourcePieOptions = {
+  // 🔧 Type as pie chart options
+  const sourcePieOptions: ChartOptions<"pie"> = {
     animation: {
       duration: 700,
       easing: "easeOutCirc",
@@ -502,7 +506,8 @@ useEffect(() => {
     };
   }, [mentions]);
 
-  const topicBarOptions = {
+  // 🔧 Type as bar chart options
+  const topicBarOptions: ChartOptions<"bar"> = {
     animation: {
       duration: 700,
       easing: "easeOutBack",
